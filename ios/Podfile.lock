@@ -495,6 +495,10 @@ PODS:
     - React-Core
     - React-RCTImage
   - SocketRocket (0.6.1)
+  - ViroKit (1.0):
+    - React
+  - ViroReact (1.0):
+    - React
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -566,6 +570,8 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "ViroKit (from `../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/`)"
+  - "ViroReact (from `../node_modules/@viro-community/react-viro/ios/`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -671,6 +677,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  ViroKit:
+    :path: "../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/"
+  ViroReact:
+    :path: "../node_modules/@viro-community/react-viro/ios/"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -730,9 +740,11 @@ SPEC CHECKSUMS:
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  ViroKit: 700d3d4ca086368d06224de1cbbc19781aea2094
+  ViroReact: f4980e6b04918c4340637f9cbaae22a6bb7ea440
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 9f32514cfa608b0401764d31d27f44c821b0ddcf
+PODFILE CHECKSUM: 171a3d2a59b60aedbd9bfea4f23fe70a84476d24
 
 COCOAPODS: 1.12.1
