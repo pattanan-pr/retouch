@@ -2,8 +2,14 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
 
-const Home = ({navigation}) => {
+interface HomeType {
+  route: any;
+  navigation: StackNavigationProp<any, any>;
+}
+
+const Home: React.FC<HomeType> = ({navigation}) => {
   return (
     <View
       style={{
@@ -20,7 +26,7 @@ const Home = ({navigation}) => {
           borderWidth: 1,
           borderRadius: 16,
         }}>
-        <TouchableOpacity onPress={navigation.navigate('Camera')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
           <Text>Click</Text>
         </TouchableOpacity>
       </View>
