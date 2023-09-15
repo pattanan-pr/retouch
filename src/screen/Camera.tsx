@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
   ViroARScene,
@@ -7,51 +7,57 @@ import {
   ViroARPlaneSelector,
   ViroMaterials,
   Viro3DObject,
+  ViroButton,
 } from '@viro-community/react-viro';
 import {useNavigation} from '@react-navigation/native';
 
 ViroMaterials.createMaterials({
   Material: {
     shininess: 2.0,
-    diffuseTexture: require('../assets/wat.png'),
+    diffuseTexture: {
+      uri: 'https://cdn.discordapp.com/attachments/888067225217552385/1151815345108168734/wat.png',
+    },
   },
 });
 
 const HelloWorldSceneAR = () => {
-  const [text, setText] = useState('Initializing AR...');
-
   function onInitialized(state, reason) {
     console.log('guncelleme', state, reason);
-    setText('Hello World!');
   }
 
   function handleTextClick(clickedText) {
     if (clickedText === 'Hello hello world') {
-      // Open the URL when Hello 2 is clicked
       console.log('clicked');
       const url = 'https://www.hotels.com/go/thailand/wat-phra-kaew';
       Linking.openURL(url);
     } else {
-      console.log(clickedText); // Log the text associated with the clicked ViroText.
+      console.log(clickedText);
     }
+  }
+
+  function handleButtonClick() {
+    const url = 'https://www.hotels.com/go/thailand/wat-phra-kaew';
+    Linking.openURL(url);
   }
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroARPlaneSelector>
+        <ViroButton
+          source={require('../assets/baseButton.png')}
+          position={[0, 0, 0]}
+          scale={[0.5, 0.5, 0.5]}
+          height={0.2}
+          width={0.3}
+          opacity={0.1}
+          onClick={handleButtonClick}
+        />
         <ViroText
           text={'Wat Pagay'}
           scale={[0.5, 0.5, 0.5]}
           position={[-2, 1, -4]}
           style={styles.helloWorldTextStyle}
           onClick={() => handleTextClick('Hello Wat Pagay')}
-        />
-        <ViroText
-          text={text}
-          scale={[0.5, 0.5, 0.5]}
-          position={[0, 0, 0]}
-          style={styles.helloWorldTextStyle}
-          onClick={() => handleTextClick('Hello hello world')}
         />
         <ViroText
           text={'Prang sam yout'}
@@ -93,7 +99,7 @@ export default () => {
   );
 };
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   f1: {flex: 1},
   helloWorldTextStyle: {
     fontFamily: 'Arial',
