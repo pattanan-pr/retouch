@@ -4,6 +4,7 @@ import React from 'react';
 import Home from '../screen/Home';
 import Camera from '../screen/Camera';
 import ImageFullScreen from '../screen/ImageFullScreen';
+import TakePhoto from '../screen/TakePhoto';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const HomeStack = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen name="ImageFullScreen" component={ImageFullScreen} />
+        <Stack.Screen name="TakePhoto" component={TakePhoto} />
       </Stack.Navigator>
     </NavigationContainer>
   );

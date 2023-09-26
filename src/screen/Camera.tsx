@@ -1,143 +1,143 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useRef, useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
-import {RNCamera} from 'react-native-camera';
-import {
-  PESDK,
-  Configuration,
-  CanvasAction,
-  ImageFormat,
-  ImageExportType,
-} from 'react-native-photoeditorsdk';
+// import { useNavigation } from '@react-navigation/native';
+// import React, { useRef, useState, useEffect } from 'react';
+// import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+// import { RNCamera } from 'react-native-camera';
+// import {
+//   PESDK,
+//   Configuration,
+//   CanvasAction,
+//   ImageFormat,
+//   ImageExportType,
+// } from 'react-native-photoeditorsdk';
 
-const Camera = () => {
-  const cameraRef = useRef(null);
-  const navigation = useNavigation();
-  const [capturedImageUri, setCapturedImageUri] = useState(null);
+// const Camera = () => {
+//   const cameraRef = useRef(null);
+//   const navigation = useNavigation();
+//   const [capturedImageUri, setCapturedImageUri] = useState(null);
 
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      const options = {quality: 0.5, base64: true};
-      const data = await cameraRef.current.takePictureAsync(options);
+//   const takePicture = async () => {
+//     if (cameraRef.current) {
+//       const options = { quality: 0.5, base64: true };
+//       const data = await cameraRef.current.takePictureAsync(options);
 
-      try {
-        const configuration: Configuration = {
-          mainCanvasActions: [
-            CanvasAction.UNDO,
-            CanvasAction.REDO,
-            CanvasAction.REMOVE_BACKGROUND,
-          ],
-          export: {
-            image: {
-              exportType: ImageExportType.FILE_URL, // or ImageExportType.DATA_URL
-              format: ImageFormat.PNG,
-              // You can also specify other options like quality if needed
-              // quality: 0.9,
-            },
-          },
-        };
-        // Open the photo editor and handle the export as well as any occurring errors.
-        const result = await PESDK.openEditor(data.uri, configuration);
-        console.log(result.image, 'ewjfpoih2werfgeywfgi;ue');
+//       try {
+//         const configuration: Configuration = {
+//           mainCanvasActions: [
+//             CanvasAction.UNDO,
+//             CanvasAction.REDO,
+//             CanvasAction.REMOVE_BACKGROUND,
+//           ],
+//           export: {
+//             image: {
+//               exportType: ImageExportType.FILE_URL, // or ImageExportType.DATA_URL
+//               format: ImageFormat.PNG,
+//               // You can also specify other options like quality if needed
+//               // quality: 0.9,
+//             },
+//           },
+//         };
+//         // Open the photo editor and handle the export as well as any occurring errors.
+//         const result = await PESDK.openEditor(data.uri, configuration);
+//         console.log(result.image, 'ewjfpoih2werfgeywfgi;ue');
 
-        if (result != null) {
-          // Navigate to the full-screen image view with the edited image
-          navigation.navigate('ImageFullScreen', {imageUri: result.image});
-        } else {
-          // The user tapped on the cancel button within the editor.
-          console.log('User canceled editing.');
-        }
-      } catch (error) {
-        // There was an error generating the edited photo.
-        console.log('Error while editing:', error);
-      }
-    }
-  };
+//         if (result != null) {
+//           // Navigate to the full-screen image view with the edited image
+//           navigation.navigate('ImageFullScreen', { imageUri: result.image });
+//         } else {
+//           // The user tapped on the cancel button within the editor.
+//           console.log('User canceled editing.');
+//         }
+//       } catch (error) {
+//         // There was an error generating the edited photo.
+//         console.log('Error while editing:', error);
+//       }
+//     }
+//   };
 
-  // export const openPhotoFromLocalPathExample = async (): Promise<void> => {
-  //   try {
-  //     // Add a photo from the assets directory.
-  //     const photo = require("../../../../../assets/pesdk/LA.jpg");
+//   // export const openPhotoFromLocalPathExample = async (): Promise<void> => {
+//   //   try {
+//   //     // Add a photo from the assets directory.
+//   //     const photo = require("../../../../../assets/pesdk/LA.jpg");
 
-  //     // Open the photo editor and handle the export as well as any occuring errors.
-  //     const result = await PESDK.openEditor(photo);
+//   //     // Open the photo editor and handle the export as well as any occuring errors.
+//   //     const result = await PESDK.openEditor(photo);
 
-  //     if (result != null) {
-  //       // The user exported a new photo successfully and the newly generated photo is located at `result.image`.
-  //       console.log(result.image);
-  //     } else {
-  //       // The user tapped on the cancel button within the editor.
-  //       return;
-  //     }
-  //   } catch (error) {
-  //     // There was an error generating the photo.
-  //     console.log(error);
-  //   }
-  // };
+//   //     if (result != null) {
+//   //       // The user exported a new photo successfully and the newly generated photo is located at `result.image`.
+//   //       console.log(result.image);
+//   //     } else {
+//   //       // The user tapped on the cancel button within the editor.
+//   //       return;
+//   //     }
+//   //   } catch (error) {
+//   //     // There was an error generating the photo.
+//   //     console.log(error);
+//   //   }
+//   // };
 
-  useEffect(() => {
-    let timer;
+//   useEffect(() => {
+//     let timer;
 
-    if (capturedImageUri) {
-      // Set a timer to hide the image after 3 seconds
-      timer = setTimeout(() => {
-        setCapturedImageUri(null); // Hide the image
-      }, 3000); // 3 seconds
-    }
+//     if (capturedImageUri) {
+//       // Set a timer to hide the image after 3 seconds
+//       timer = setTimeout(() => {
+//         setCapturedImageUri(null); // Hide the image
+//       }, 3000); // 3 seconds
+//     }
 
-    // Cleanup the timer when the component unmounts
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [capturedImageUri]);
+//     // Cleanup the timer when the component unmounts
+//     return () => {
+//       clearTimeout(timer);
+//     };
+//   }, [capturedImageUri]);
 
-  return (
-    <View style={{flex: 1}}>
-      {/* Render the camera component */}
-      <RNCamera ref={cameraRef} style={{flex: 1}} captureAudio={false}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-            flexDirection: 'row',
-          }}>
-          <TouchableOpacity
-            style={{
-              flex: 0.1,
-              alignSelf: 'flex-end',
-              alignItems: 'center',
-            }}
-            onPress={takePicture}>
-            <Text style={{fontSize: 18, marginBottom: 10, color: 'white'}}>
-              Take Picture
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </RNCamera>
+//   return (
+//     <View style={{ flex: 1 }}>
+//       {/* Render the camera component */}
+//       <RNCamera ref={cameraRef} style={{ flex: 1 }} captureAudio={false}>
+//         <View
+//           style={{
+//             flex: 1,
+//             backgroundColor: 'transparent',
+//             flexDirection: 'row',
+//           }}>
+//           <TouchableOpacity
+//             style={{
+//               flex: 0.1,
+//               alignSelf: 'flex-end',
+//               alignItems: 'center',
+//             }}
+//             onPress={takePicture}>
+//             <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
+//               Take Picture
+//             </Text>
+//           </TouchableOpacity>
+//         </View>
+//       </RNCamera>
 
-      {/* Display the captured image if available */}
-      {/* {capturedImageUri && (
-        <View style={styles.imageContainer}>
-          <Image source={{uri: capturedImageUri}} style={styles.image} />
-        </View>
-      )} */}
-    </View>
-  );
-};
+//       {/* Display the captured image if available */}
+//       {/* {capturedImageUri && (
+//         <View style={styles.imageContainer}>
+//           <Image source={{uri: capturedImageUri}} style={styles.image} />
+//         </View>
+//       )} */}
+//     </View>
+//   );
+// };
 
-const styles = StyleSheet.create({
-  imageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    width: 300,
-    height: 300,
-  },
-});
+// const styles = StyleSheet.create({
+//   imageContainer: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   image: {
+//     width: 300,
+//     height: 300,
+//   },
+// });
 
-export default Camera;
+// export default Camera;
 
 // import React, {useState, useRef} from 'react';
 // import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
@@ -224,114 +224,145 @@ export default Camera;
 //   },
 // });
 
-// import React from 'react';
-// import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-// import {
-//   ViroARScene,
-//   ViroText,
-//   ViroARSceneNavigator,
-//   ViroARPlaneSelector,
-//   ViroMaterials,
-//   Viro3DObject,
-//   ViroButton,
-// } from '@viro-community/react-viro';
-// import {useNavigation} from '@react-navigation/native';
+import React, {useRef} from 'react';
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  ViroARScene,
+  ViroText,
+  ViroARSceneNavigator,
+  ViroARPlane,
+  ViroMaterials,
+  Viro3DObject,
+  ViroButton,
+} from '@viro-community/react-viro';
+import {useNavigation} from '@react-navigation/native';
+import {captureRef} from 'react-native-view-shot';
 
-// ViroMaterials.createMaterials({
-//   Material: {
-//     shininess: 2.0,
-//     diffuseTexture: {
-//       uri: 'https://cdn.discordapp.com/attachments/888067225217552385/1151815345108168734/wat.png',
-//     },
-//   },
-// });
+ViroMaterials.createMaterials({
+  Material: {
+    shininess: 2.0,
+    diffuseTexture: {
+      uri: 'https://cdn.discordapp.com/attachments/888067225217552385/1151815345108168734/wat.png',
+    },
+  },
+});
 
-// const HelloWorldSceneAR = () => {
-//   function onInitialized(state, reason) {
-//     console.log('guncelleme', state, reason);
-//   }
+const HelloWorldSceneAR = () => {
+  function onInitialized(state, reason) {
+    console.log('guncelleme', state, reason);
+  }
 
-//   function handleTextClick(clickedText) {
-//     if (clickedText === 'Hello hello world') {
-//       console.log('clicked');
-//       const url = 'https://www.hotels.com/go/thailand/wat-phra-kaew';
-//       Linking.openURL(url);
-//     } else {
-//       console.log(clickedText);
-//     }
-//   }
+  function handleTextClick(clickedText) {
+    if (clickedText === 'Hello hello world') {
+      console.log('clicked');
+      const url = 'https://www.hotels.com/go/thailand/wat-phra-kaew';
+      Linking.openURL(url);
+    } else {
+      console.log(clickedText);
+    }
+  }
 
-//   function handleButtonClick() {
-//     const url = 'https://www.hotels.com/go/thailand/wat-phra-kaew';
-//     Linking.openURL(url);
-//   }
+  function handleButtonClick() {
+    const url = 'https://www.hotels.com/go/thailand/wat-phra-kaew';
+    Linking.openURL(url);
+  }
 
-//   return (
-//     <ViroARScene onTrackingUpdated={onInitialized}>
-//       <ViroARPlaneSelector>
-//         <ViroButton
-//           source={require('../assets/baseButton.png')}
-//           position={[0, 0, 0]}
-//           scale={[0.5, 0.5, 0.5]}
-//           height={0.2}
-//           width={0.3}
-//           opacity={1}
-//           onClick={handleButtonClick}
-//         />
-//         <ViroText
-//           text={'Wat Pagay'}
-//           scale={[0.5, 0.5, 0.5]}
-//           position={[-2, 1, -4]}
-//           style={styles.helloWorldTextStyle}
-//           onClick={() => handleTextClick('Hello Wat Pagay')}
-//         />
-//         <ViroText
-//           text={'Prang sam yout'}
-//           scale={[0.5, 0.5, 0.5]}
-//           position={[-3, 1, -1]}
-//           style={styles.helloWorldTextStyle}
-//           onClick={() => handleTextClick('Hello Prang sam yout')}
-//         />
-//         <Viro3DObject
-//           source={require('../assets/sphere.obj')}
-//           position={[0, 0, 0]}
-//           scale={[10, 10, 10]}
-//           type="OBJ"
-//           materials={['Material']}
-//           opacity={1}
-//         />
-//       </ViroARPlaneSelector>
-//     </ViroARScene>
-//   );
-// };
+  return (
+    <ViroARScene onTrackingUpdated={onInitialized}>
+      <ViroARPlane>
+        <ViroButton
+          source={require('../assets/baseButton.png')}
+          position={[0, 0, 0]}
+          scale={[0.5, 0.5, 0.5]}
+          height={0.2}
+          width={0.3}
+          opacity={1}
+          onClick={handleButtonClick}
+        />
+        <ViroText
+          text={'Wat Pagay'}
+          scale={[0.5, 0.5, 0.5]}
+          position={[-2, 1, -4]}
+          style={styles.helloWorldTextStyle}
+          onClick={() => handleTextClick('Hello Wat Pagay')}
+        />
+        <ViroText
+          text={'Prang sam yout'}
+          scale={[0.5, 0.5, 0.5]}
+          position={[-3, 1, -1]}
+          style={styles.helloWorldTextStyle}
+          onClick={() => handleTextClick('Hello Prang sam yout')}
+        />
+        <Viro3DObject
+          source={require('../assets/sphere.obj')}
+          position={[0, 0, 0]}
+          scale={[10, 10, 10]}
+          type="OBJ"
+          materials={['Material']}
+          opacity={1}
+        />
+      </ViroARPlane>
+    </ViroARScene>
+  );
+};
 
-// export default () => {
-//   const navigation = useNavigation();
-//   return (
-//     <View style={{flex: 1}}>
-//       <ViroARSceneNavigator
-//         autofocus={true}
-//         initialScene={{
-//           scene: HelloWorldSceneAR,
-//         }}
-//         style={styles.f1}
-//       />
-//       <View>
-//         <TouchableOpacity onPress={() => navigation.goBack()}>
-//           <Text>Home</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// };
+const Camera = () => {
+  const navigation = useNavigation();
+  const savedPhoto = useRef(null);
 
-// const styles = StyleSheet.create({
-//   f1: {flex: 1},
-//   helloWorldTextStyle: {
-//     fontFamily: 'Arial',
-//     fontSize: 30,
-//     color: '#ffffff',
-//     textAlignVertical: 'center',
-//     textAlign: 'center',
-//   },
-// });
+  const savePhoto = async () => {
+    try {
+      const photo = await captureRef(savedPhoto, {
+        result: 'tmpfile',
+        quality: 1,
+        format: 'jpg',
+      });
+      // console.log(`file:/${photo}`);
+      const bg = `file:/${photo}`;
+      navigation.navigate('TakePhoto', { imageUri: bg });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <View ref={savedPhoto} style={{flex: 1}}>
+      <ViroARSceneNavigator
+        autofocus={true}
+        initialScene={{
+          scene: HelloWorldSceneAR,
+        }}
+        style={styles.f1}
+      />
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text>Home</Text>
+      </TouchableOpacity>
+
+      <View style={{justifyContent: 'center', alignContent: 'center'}}>
+        <TouchableOpacity onPress={savePhoto}>
+          <Text>Capture!</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+export default Camera;
+
+const styles = StyleSheet.create({
+  f1: {flex: 1},
+  helloWorldTextStyle: {
+    fontFamily: 'Arial',
+    fontSize: 30,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
+});

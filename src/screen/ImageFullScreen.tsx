@@ -1,16 +1,18 @@
 import React from 'react';
-import {View, Image, StyleSheet, ImageBackground} from 'react-native';
+import {Image, StyleSheet, ImageBackground, View, Text} from 'react-native';
 
 const ImageFullScreen = ({route}) => {
-  const {imageUri} = route.params;
+  // const {image} = route.params.image;
+  // const { bgImg } = route.params.bgImg;
+  console.log(route.params);
 
   return (
     <ImageBackground
       source={{
-        uri: 'https://media.discordapp.net/attachments/888067225217552385/1151815345108168734/wat.png?ex=65135061&is=6511fee1&hm=52ea1de054c0bac3017c4e549c09f4d4290f17209bf09148474742d657756440&=&width=2124&height=1062',
+        uri: route.params.bgImg,
       }}
       style={styles.container}>
-      <Image source={{uri: imageUri}} style={styles.image} />
+      <Image source={{ uri: route.params.image }} style={styles.image} />
     </ImageBackground>
   );
 };
