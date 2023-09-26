@@ -5,11 +5,18 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, '13.0'
 prepare_react_native_project!
 
 pod 'ViroReact', :path => '../node_modules/@viro-community/react-viro/ios/'
 pod 'ViroKit', :path => '../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/'
+# pod 'RNOpencv3', :path => '../node_modules/react-native-opencv3/ios', :subspecs => [
+#       'CvCamera'
+#   ]
+pod 'RNFS', :path => '../node_modules/react-native-fs'
+pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
+# platform :ios '13.0'
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
 # because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
