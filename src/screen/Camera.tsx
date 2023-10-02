@@ -241,6 +241,7 @@ import {
   ViroMaterials,
   Viro3DObject,
   ViroButton,
+  Viro360Video,
 } from '@viro-community/react-viro';
 import {useNavigation} from '@react-navigation/native';
 import {captureRef} from 'react-native-view-shot';
@@ -277,7 +278,13 @@ const HelloWorldSceneAR = () => {
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroARPlane>
-        <ViroButton
+        <Viro360Video
+          source={require('../assets/vdo.mp4')}
+          loop={true}
+          paused={false}
+          volume={1.0}
+        />
+        {/* <ViroButton
           source={require('../assets/baseButton.png')}
           position={[0, 0, 0]}
           scale={[0.5, 0.5, 0.5]}
@@ -307,7 +314,7 @@ const HelloWorldSceneAR = () => {
           type="OBJ"
           materials={['Material']}
           opacity={1}
-        />
+        /> */}
       </ViroARPlane>
     </ViroARScene>
   );
@@ -326,7 +333,7 @@ const Camera = () => {
       });
       // console.log(`file:/${photo}`);
       const bg = `file:/${photo}`;
-      navigation.navigate('TakePhoto', { imageUri: bg });
+      navigation.navigate('TakePhoto', {imageUri: bg});
     } catch (error) {
       console.log(error);
     }
