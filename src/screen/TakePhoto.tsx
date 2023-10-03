@@ -1,12 +1,12 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   ImageBackground,
-  Image,
   StyleSheet,
-  TouchableOpacity,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef} from 'react';
 import {RNCamera} from 'react-native-camera';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -20,6 +20,7 @@ import {
 const TakePhoto = ({route}) => {
   const cameraRef = useRef(null);
   const navigation = useNavigation();
+  console.log(route);
 
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -44,7 +45,7 @@ const TakePhoto = ({route}) => {
         };
         // Open the photo editor and handle the export as well as any occurring errors.
         const result = await PESDK.openEditor(data.uri, configuration);
-        console.log(result.image, 'ewjfpoih2werfgeywfgi;ue');
+        // console.log(result.image, 'image');
 
         if (result != null) {
           // Navigate to the full-screen image view with the edited image
@@ -65,30 +66,22 @@ const TakePhoto = ({route}) => {
   };
   return (
     <View style={{flex: 1}}>
-      {/* Render the camera component */}
-
       <RNCamera ref={cameraRef} style={{flex: 1}} captureAudio={false}>
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <Text style={styles.backButtonText}>{route.params.imageUri}</Text>
+          </TouchableOpacity>
+        </View>
         <ImageBackground
           source={{
-            uri: route.params.imageUri,
+            uri: 'file:///private/var/mobile/Containers/Data/Application/6046F416-7D26-4B16-8567-9BA428334CDA/tmp/ReactNative/EEE638C7-1F8D-4370-A368-423840944479.jpg',
           }}
           style={styles.image}>
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-              flexDirection: 'row',
-            }}>
-            <TouchableOpacity
-              style={{
-                flex: 0.1,
-                alignSelf: 'flex-end',
-                alignItems: 'center',
-              }}
-              onPress={takePicture}>
-              <Text style={{fontSize: 18, marginBottom: 10, color: 'white'}}>
-                Take Picture
-              </Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={takePicture}>
+              <View style={styles.button} />
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -102,7 +95,6 @@ export default TakePhoto;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'blue', // Background color for full-screen view
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -111,5 +103,30 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     opacity: 0.3,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: '50%', // Center horizontally
+    transform: [{translateX: -30}],
+  },
+  button: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 4,
+    borderColor: 'grey',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+  },
+  backButtonText: {
+    fontSize: 18,
+    color: 'white',
   },
 });

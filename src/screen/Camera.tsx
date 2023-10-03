@@ -1,238 +1,6 @@
-// import { useNavigation } from '@react-navigation/native';
-// import React, { useRef, useState, useEffect } from 'react';
-// import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-// import { RNCamera } from 'react-native-camera';
-// import {
-//   PESDK,
-//   Configuration,
-//   CanvasAction,
-//   ImageFormat,
-//   ImageExportType,
-// } from 'react-native-photoeditorsdk';
-
-// const Camera = () => {
-//   const cameraRef = useRef(null);
-//   const navigation = useNavigation();
-//   const [capturedImageUri, setCapturedImageUri] = useState(null);
-
-//   const takePicture = async () => {
-//     if (cameraRef.current) {
-//       const options = { quality: 0.5, base64: true };
-//       const data = await cameraRef.current.takePictureAsync(options);
-
-//       try {
-//         const configuration: Configuration = {
-//           mainCanvasActions: [
-//             CanvasAction.UNDO,
-//             CanvasAction.REDO,
-//             CanvasAction.REMOVE_BACKGROUND,
-//           ],
-//           export: {
-//             image: {
-//               exportType: ImageExportType.FILE_URL, // or ImageExportType.DATA_URL
-//               format: ImageFormat.PNG,
-//               // You can also specify other options like quality if needed
-//               // quality: 0.9,
-//             },
-//           },
-//         };
-//         // Open the photo editor and handle the export as well as any occurring errors.
-//         const result = await PESDK.openEditor(data.uri, configuration);
-//         console.log(result.image, 'ewjfpoih2werfgeywfgi;ue');
-
-//         if (result != null) {
-//           // Navigate to the full-screen image view with the edited image
-//           navigation.navigate('ImageFullScreen', { imageUri: result.image });
-//         } else {
-//           // The user tapped on the cancel button within the editor.
-//           console.log('User canceled editing.');
-//         }
-//       } catch (error) {
-//         // There was an error generating the edited photo.
-//         console.log('Error while editing:', error);
-//       }
-//     }
-//   };
-
-//   // export const openPhotoFromLocalPathExample = async (): Promise<void> => {
-//   //   try {
-//   //     // Add a photo from the assets directory.
-//   //     const photo = require("../../../../../assets/pesdk/LA.jpg");
-
-//   //     // Open the photo editor and handle the export as well as any occuring errors.
-//   //     const result = await PESDK.openEditor(photo);
-
-//   //     if (result != null) {
-//   //       // The user exported a new photo successfully and the newly generated photo is located at `result.image`.
-//   //       console.log(result.image);
-//   //     } else {
-//   //       // The user tapped on the cancel button within the editor.
-//   //       return;
-//   //     }
-//   //   } catch (error) {
-//   //     // There was an error generating the photo.
-//   //     console.log(error);
-//   //   }
-//   // };
-
-//   useEffect(() => {
-//     let timer;
-
-//     if (capturedImageUri) {
-//       // Set a timer to hide the image after 3 seconds
-//       timer = setTimeout(() => {
-//         setCapturedImageUri(null); // Hide the image
-//       }, 3000); // 3 seconds
-//     }
-
-//     // Cleanup the timer when the component unmounts
-//     return () => {
-//       clearTimeout(timer);
-//     };
-//   }, [capturedImageUri]);
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       {/* Render the camera component */}
-//       <RNCamera ref={cameraRef} style={{ flex: 1 }} captureAudio={false}>
-//         <View
-//           style={{
-//             flex: 1,
-//             backgroundColor: 'transparent',
-//             flexDirection: 'row',
-//           }}>
-//           <TouchableOpacity
-//             style={{
-//               flex: 0.1,
-//               alignSelf: 'flex-end',
-//               alignItems: 'center',
-//             }}
-//             onPress={takePicture}>
-//             <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-//               Take Picture
-//             </Text>
-//           </TouchableOpacity>
-//         </View>
-//       </RNCamera>
-
-//       {/* Display the captured image if available */}
-//       {/* {capturedImageUri && (
-//         <View style={styles.imageContainer}>
-//           <Image source={{uri: capturedImageUri}} style={styles.image} />
-//         </View>
-//       )} */}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   imageContainer: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   image: {
-//     width: 300,
-//     height: 300,
-//   },
-// });
-
-// export default Camera;
-
-// import React, {useState, useRef} from 'react';
-// import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
-// import {RNCamera} from 'react-native-camera'; // Import the RNCamera component from react-native-camera
-// // import Camera from './Camera'; // Import your Camera component
-
-// export default function Camera() {
-//   const cameraRef = useRef(null);
-//   const [isCameraVisible, setIsCameraVisible] = useState(false);
-
-//   const takePicture = async () => {
-//     if (cameraRef.current) {
-//       try {
-//         const options = {quality: 0.5, base64: true};
-//         const data = await cameraRef.current.takePictureAsync(options);
-//         console.log('Picture data:', data);
-//       } catch (error) {
-//         console.error('Error taking picture:', error);
-//       }
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       {isCameraVisible ? (
-//         <RNCamera ref={cameraRef} style={styles.camera} captureAudio={false}>
-//           <TouchableOpacity onPress={takePicture} style={styles.captureButton}>
-//             <View style={styles.captureInnerButton} />
-//           </TouchableOpacity>
-//         </RNCamera>
-//       ) : (
-//         <View style={styles.cameraContainer}>
-//           {/* <Camera /> */}
-//           <TouchableOpacity
-//             onPress={() => setIsCameraVisible(true)}
-//             style={styles.showCameraButton}>
-//             <View>
-//               <Text>Show Camera</Text>
-//             </View>
-//           </TouchableOpacity>
-//         </View>
-//       )}
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   cameraContainer: {
-//     flex: 1,
-//   },
-//   camera: {
-//     flex: 1,
-//     justifyContent: 'flex-end',
-//     alignItems: 'center',
-//   },
-//   captureButton: {
-//     flex: 0,
-//     alignSelf: 'center',
-//     position: 'absolute',
-//     bottom: 20,
-//     backgroundColor: 'white',
-//     borderRadius: 50,
-//     width: 70,
-//     height: 70,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   captureInnerButton: {
-//     backgroundColor: 'red',
-//     borderRadius: 40,
-//     width: 60,
-//     height: 60,
-//   },
-//   showCameraButton: {
-//     backgroundColor: 'blue',
-//     padding: 20,
-//     borderRadius: 10,
-//     marginTop: 20,
-//   },
-// });
-
+/* eslint-disable react-native/no-inline-styles */
 import React, {useRef} from 'react';
-import {
-  Image,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
   ViroARScene,
   ViroText,
@@ -241,7 +9,6 @@ import {
   ViroMaterials,
   Viro3DObject,
   ViroButton,
-  Viro360Video,
 } from '@viro-community/react-viro';
 import {useNavigation} from '@react-navigation/native';
 import {captureRef} from 'react-native-view-shot';
@@ -278,13 +45,7 @@ const HelloWorldSceneAR = () => {
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroARPlane>
-        <Viro360Video
-          source={require('../assets/vdo.mp4')}
-          loop={true}
-          paused={false}
-          volume={1.0}
-        />
-        {/* <ViroButton
+        <ViroButton
           source={require('../assets/baseButton.png')}
           position={[0, 0, 0]}
           scale={[0.5, 0.5, 0.5]}
@@ -314,7 +75,7 @@ const HelloWorldSceneAR = () => {
           type="OBJ"
           materials={['Material']}
           opacity={1}
-        /> */}
+        />
       </ViroARPlane>
     </ViroARScene>
   );
@@ -326,21 +87,28 @@ const Camera = () => {
 
   const savePhoto = async () => {
     try {
-      const photo = await captureRef(savedPhoto, {
-        result: 'tmpfile',
-        quality: 1,
-        format: 'jpg',
-      });
-      // console.log(`file:/${photo}`);
-      const bg = `file:/${photo}`;
-      navigation.navigate('TakePhoto', {imageUri: bg});
+      if (savedPhoto && savedPhoto.current) {
+        const photo = await captureRef(savedPhoto.current, {
+          result: 'tmpfile',
+          quality: 1,
+          format: 'jpg',
+        });
+        if (photo) {
+          const bg = `file:/${photo}`;
+          navigation.navigate('TakePhoto', { imageUri: bg });
+        } else {
+          console.log('No captured photo received.');
+        }
+      } else {
+        console.log('savedPhoto is not defined or null.');
+      }
     } catch (error) {
-      console.log(error);
+      console.error('Error capturing photo:', error);
     }
   };
 
   return (
-    <View ref={savedPhoto} style={{flex: 1}}>
+    <View style={{flex: 1}}>
       <ViroARSceneNavigator
         autofocus={true}
         initialScene={{
@@ -348,13 +116,31 @@ const Camera = () => {
         }}
         style={styles.f1}
       />
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text>Home</Text>
-      </TouchableOpacity>
-
-      <View style={{justifyContent: 'center', alignContent: 'center'}}>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 20,
+        }}>
         <TouchableOpacity onPress={savePhoto}>
-          <Text>Capture!</Text>
+          <View
+            ref={savedPhoto}
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: 100,
+              borderWidth: 4,
+              borderColor: 'white',
+              backgroundColor: 'transparent',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
         </TouchableOpacity>
       </View>
     </View>
