@@ -12,6 +12,7 @@ import ImageFullScreen from '../screen/ImageFullScreen';
 import TakePhoto from '../screen/TakePhoto';
 import Map from '../screen/Map';
 import Account from '../screen/Account';
+import ShowImage from '../screen/ShowImage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -70,6 +71,11 @@ function HomeStack() {
         <Stack.Screen
           name="TakePhoto"
           component={TakePhoto}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ShowImage"
+          component={ShowImage}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

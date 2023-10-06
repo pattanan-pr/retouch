@@ -49,6 +49,7 @@ const TakePhoto = ({route}) => {
 
         if (result != null) {
           // Navigate to the full-screen image view with the edited image
+          // console.log('sok');
           navigation.navigate('ImageFullScreen', {
             image: result.image,
             bgImg: route.params.imageUri,
@@ -67,18 +68,21 @@ const TakePhoto = ({route}) => {
   return (
     <View style={{flex: 1}}>
       <RNCamera ref={cameraRef} style={{flex: 1}} captureAudio={false}>
-        <View style={styles.backButtonContainer}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}>
-            <Text style={styles.backButtonText}>{route.params.imageUri}</Text>
-          </TouchableOpacity>
-        </View>
         <ImageBackground
           source={{
-            uri: 'file:///private/var/mobile/Containers/Data/Application/6046F416-7D26-4B16-8567-9BA428334CDA/tmp/ReactNative/EEE638C7-1F8D-4370-A368-423840944479.jpg',
+            uri: route.params.imageUri,
           }}
-          style={styles.image}>
+          style={styles.image}
+          onError={error => {
+            console.log('Image load error:', error);
+          }}>
+          <View style={styles.backButtonContainer}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}>
+              <Text style={styles.backButtonText}>back</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={takePicture}>
               <View style={styles.button} />

@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useRef} from 'react';
-import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   ViroARScene,
   ViroText,
@@ -12,6 +19,8 @@ import {
 } from '@viro-community/react-viro';
 import {useNavigation} from '@react-navigation/native';
 import {captureRef} from 'react-native-view-shot';
+import Geolocation from 'react-native-geolocation-service';
+import GeoFencing from 'react-native-geo-fencing';
 
 ViroMaterials.createMaterials({
   Material: {
@@ -20,9 +29,18 @@ ViroMaterials.createMaterials({
       uri: 'https://cdn.discordapp.com/attachments/888067225217552385/1151815345108168734/wat.png',
     },
   },
+  Material2: {
+    shininess: 2.0,
+    diffuseTexture: {
+      uri: 'https://as1.ftcdn.net/v2/jpg/02/26/55/78/1000_F_226557861_fiqTpEq0SoV6i9ky0CgixZqrv508erw9.jpg',
+    },
+  },
 });
 
-const HelloWorldSceneAR = () => {
+const HelloWorldSceneAR = ({myValue}) => {
+  console.log(myValue, 'myValue');
+  // const materials = ['Material'];
+  const materials = myValue ? ['Material'] : ['Material2'];
   function onInitialized(state, reason) {
     console.log('guncelleme', state, reason);
   }
@@ -73,7 +91,7 @@ const HelloWorldSceneAR = () => {
           position={[0, 0, 0]}
           scale={[10, 10, 10]}
           type="OBJ"
-          materials={['Material']}
+          materials={materials}
           opacity={1}
         />
       </ViroARPlane>
@@ -85,37 +103,167 @@ const Camera = () => {
   const navigation = useNavigation();
   const savedPhoto = useRef(null);
 
+  const [forceRender, setForceRender] = useState(false);
+
+  const [isInsidePolygon, setIsInsidePolygon] = useState(false);
+  const [hi, sethi] = useState('');
+  const [polygon, setPolygon] = useState({lat: 0, lng: 0});
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      setForceRender(true);
+    });
+    setForceRender(true);
+  }, []);
+
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      async position => {
+        let point = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        console.log(point);
+        setPolygon(point);
+
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        const squareSize = 0.000001;
+        const polygon = [
+          {
+            lat: 13.741935729980469 + squareSize,
+            lng: 100.58592027530723 + squareSize,
+          },
+          {
+            lat: 13.741935729980469 + squareSize,
+            lng: 100.58592027530723 - squareSize,
+          },
+          {
+            lat: 13.741935729980469 - squareSize,
+            lng: 100.58592027530723 - squareSize,
+          },
+          {
+            lat: 13.741935729980469 - squareSize,
+            lng: 100.58592027530723 + squareSize,
+          },
+          {
+            lat: 13.741935729980469 + squareSize,
+            lng: 100.58592027530723 + squareSize,
+          },
+        ];
+
+        try {
+          await GeoFencing.containsLocation(point, polygon);
+          await setForceRender(false);
+          // setForceRender(true);
+          await setIsInsidePolygon(true);
+          await setForceRender(true);
+          // setForceRender(false);
+        } catch (error) {
+          console.log('point is NOT within polygon');
+          await setForceRender(false);
+          await setIsInsidePolygon(false);
+          await setForceRender(true);
+        }
+      },
+      error => console.log('err get location', error),
+      {
+        enableHighAccuracy: true,
+        timeout: 200000,
+        distanceFilter: 0,
+      },
+    );
+  };
+
+  // console.log(isInsidePolygon, 'wopkopwe');
   const savePhoto = async () => {
     try {
-      if (savedPhoto && savedPhoto.current) {
-        const photo = await captureRef(savedPhoto.current, {
-          result: 'tmpfile',
-          quality: 1,
-          format: 'jpg',
-        });
-        if (photo) {
-          const bg = `file:/${photo}`;
-          navigation.navigate('TakePhoto', { imageUri: bg });
-        } else {
-          console.log('No captured photo received.');
-        }
-      } else {
-        console.log('savedPhoto is not defined or null.');
-      }
+      const photo = await captureRef(savedPhoto, {
+        result: 'tmpfile',
+        quality: 1,
+        format: 'jpg',
+      });
+      const bg = `file:/${photo}`;
+      setForceRender(false);
+      navigation.navigate('TakePhoto', {imageUri: bg});
     } catch (error) {
-      console.error('Error capturing photo:', error);
+      console.log(error);
     }
   };
 
+  const showPhoto = async () => {
+    try {
+      const photo = await captureRef(savedPhoto, {
+        result: 'tmpfile',
+        quality: 1,
+        format: 'jpg',
+      });
+      const bg = `file:/${photo}`;
+      navigation.navigate('ShowImage', {imageUri: bg});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(isInsidePolygon, 'isInsidePolygon');
+
   return (
     <View style={{flex: 1}}>
-      <ViroARSceneNavigator
-        autofocus={true}
-        initialScene={{
-          scene: HelloWorldSceneAR,
-        }}
-        style={styles.f1}
-      />
+      {forceRender && (
+        <ViroARSceneNavigator
+          ref={savedPhoto}
+          autofocus={true}
+          initialScene={{
+            scene: () => <HelloWorldSceneAR myValue={isInsidePolygon} />,
+          }}
+          style={styles.f1}
+        />
+      )}
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 530,
+          paddingHorizontal: 16,
+        }}>
+        <View />
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: '700',
+            color: '#fff',
+            textAlign: 'center',
+          }}>
+          Wat Maha That
+        </Text>
+        <TouchableOpacity onPress={getCurrentLocation}>
+          <Image source={require('../assets/Refresh.png')} />
+        </TouchableOpacity>
+      </View>
+
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 500,
+          paddingHorizontal: 16,
+        }}>
+        <Text>{JSON.stringify(polygon)}</Text>
+      </View>
       <View
         style={{
           position: 'absolute',
@@ -127,9 +275,8 @@ const Camera = () => {
           alignItems: 'center',
           marginBottom: 20,
         }}>
-        <TouchableOpacity onPress={savePhoto}>
+        <TouchableOpacity onPress={showPhoto}>
           <View
-            ref={savedPhoto}
             style={{
               width: 60,
               height: 60,
@@ -141,6 +288,36 @@ const Camera = () => {
               alignItems: 'center',
             }}
           />
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 50,
+          right: 0,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          marginBottom: 39,
+        }}>
+        <TouchableOpacity>
+          <Image source={require('../assets/Tune.png')} />
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 50,
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          marginBottom: 39,
+        }}>
+        <TouchableOpacity onPress={savePhoto}>
+          <Image source={require('../assets/Face.png')} />
         </TouchableOpacity>
       </View>
     </View>

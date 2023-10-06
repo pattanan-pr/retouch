@@ -36,6 +36,7 @@ if linkage != nil
 end
 
 target 'Retouch' do
+  pod 'react-native-geo-fencing', path: '../node_modules/react-native-geo-fencing'
   config = use_native_modules!
 
   # Flags change depending on the env values.
