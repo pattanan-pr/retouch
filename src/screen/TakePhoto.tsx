@@ -2,11 +2,10 @@
 import {
   ImageBackground,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {RNCamera} from 'react-native-camera';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -19,9 +18,9 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const TakePhoto = ({route}) => {
-  const cameraRef = useRef(null);
+  const cameraRef = useRef<RNCamera | null>(null);
   const navigation = useNavigation();
-  console.log(route);
+  const [isRecording, setIsRecording] = useState(false);
 
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -66,6 +65,34 @@ const TakePhoto = ({route}) => {
     }
     //   };
   };
+
+  const recordingOptions = {
+    quality: RNCamera.Constants.VideoQuality['720p'],
+    maxDuration: 5000, // Set the maximum video duration to 5 seconds (5000 milliseconds)
+  };
+
+  const toggleRecording = async () => {
+    if (cameraRef.current) {
+      try {
+        if (!isRecording) {
+          // Start recording
+          await cameraRef.current.recordAsync(recordingOptions);
+          setIsRecording(true);
+        } else {
+          // Stop recording
+          const data = await cameraRef.current.stopRecording();
+          setIsRecording(false);
+
+          // Handle the recorded video as needed
+          console.log('Recorded video URI:', data);
+        }
+      } catch (error) {
+        console.log('Error while recording:', error);
+      }
+    }
+  };
+
+
   return (
     <View style={{flex: 1}}>
       <RNCamera ref={cameraRef} style={{flex: 1}} captureAudio={false}>
@@ -86,6 +113,11 @@ const TakePhoto = ({route}) => {
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={takePicture}>
+              <View style={styles.button} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonContainer2}>
+            <TouchableOpacity onPress={toggleRecording}>
               <View style={styles.button} />
             </TouchableOpacity>
           </View>
@@ -114,6 +146,13 @@ const styles = StyleSheet.create({
     marginTop: 40,
     bottom: 20,
     left: '50%', // Center horizontally
+    transform: [{translateX: -30}],
+  },
+  buttonContainer2: {
+    position: 'absolute',
+    marginTop: 40,
+    bottom: 20,
+    left: '70%', // Center horizontally
     transform: [{translateX: -30}],
   },
   button: {

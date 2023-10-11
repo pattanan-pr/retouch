@@ -13,6 +13,7 @@ import Map from '../screen/Map';
 import Account from '../screen/Account';
 import ShowImage from '../screen/ShowImage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ViewVideoScreen from '../screen/ViewVideoScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -109,6 +110,11 @@ function HomeStack() {
         <Stack.Screen
           name="ShowImage"
           component={ShowImage}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewVideoScreen"
+          component={ViewVideoScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
