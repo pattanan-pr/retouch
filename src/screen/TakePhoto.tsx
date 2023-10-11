@@ -16,6 +16,7 @@ import {
   ImageFormat,
   ImageExportType,
 } from 'react-native-photoeditorsdk';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const TakePhoto = ({route}) => {
   const cameraRef = useRef(null);
@@ -80,7 +81,7 @@ const TakePhoto = ({route}) => {
             <TouchableOpacity
               style={styles.backButton}
               onPress={() => navigation.goBack()}>
-              <Text style={styles.backButtonText}>back</Text>
+              <Icon name="close" color={'#FFFFFF'} size={30} />
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
+    marginTop: 40,
     bottom: 20,
     left: '50%', // Center horizontally
     transform: [{translateX: -30}],
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 20,
+    top: 50,
     left: 20,
   },
   backButtonText: {

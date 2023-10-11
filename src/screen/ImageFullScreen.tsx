@@ -1,15 +1,18 @@
 import Slider from '@react-native-community/slider';
-import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, ImageBackground, View, Text } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import {Image, StyleSheet, ImageBackground, View, Text} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icons from 'react-native-vector-icons/MaterialIcons';
+import RNFS from 'react-native-fs';
 
-const ImageFullScreen = ({ route }) => {
+const ImageFullScreen = ({route}) => {
   const navigation = useNavigation();
   const [opacity, setOpacity] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  const handleOpacityChange = (value) => {
+  const handleOpacityChange = value => {
     setOpacity(value);
   };
 
@@ -18,21 +21,40 @@ const ImageFullScreen = ({ route }) => {
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-  }, [opacity])
+  }, [opacity]);
 
   const goBackToHome = () => {
     navigation.navigate('Camera');
-  }
+  };
+
+  const saveImageToDevice = async () => {
+    try {
+      const {image} = route.params;
+      const fileName = 'saved_image.jpg';
+      const fileLocation = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+      await RNFS.downloadFile({
+        fromUrl: image,
+        toFile: fileLocation,
+      });
+
+      // Display a message indicating that the image has been saved
+      // Alert.alert('Image Saved', `Image saved to ${fileLocation}`);
+      console.log('hulay');
+    } catch (error) {
+      console.error('Error saving image:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={goBackToHome}>
-          <Image source={require('../assets/Close.png')} />
+          <Icon name="close" color={'#ffff'} size={30} />
         </TouchableOpacity>
         <Text>Preview</Text>
-        <TouchableOpacity>
-          <Image source={require('../assets/Save.png')} />
+        <TouchableOpacity onPress={saveImageToDevice}>
+          <Icons name="save-alt" color={'#FFFFFF'} size={30} />
         </TouchableOpacity>
       </View>
       {loading ? (
@@ -42,13 +64,13 @@ const ImageFullScreen = ({ route }) => {
       ) : (
         <View style={styles.imageContainer}>
           <ImageBackground
-            source={{ uri: route.params.bgImg }}
+            source={{uri: route.params.bgImg}}
             style={{
               ...styles.imageBackground,
               backgroundColor: `rgba(0, 0, 0, ${opacity})`,
             }}>
             <View style={styles.imageContent}>
-              <Image source={{ uri: route.params.image }} style={styles.image} />
+              <Image source={{uri: route.params.image}} style={styles.image} />
             </View>
           </ImageBackground>
         </View>
@@ -57,7 +79,7 @@ const ImageFullScreen = ({ route }) => {
         <Text style={styles.opacityText}>Opacity</Text>
       </View>
       <View style={styles.sliderContainer}>
-        <Image source={require('../assets/circle.png')} />
+        <Icon name="circle-outline" color={'#7F7572'} size={30} />
         <Slider
           style={styles.slider}
           minimumValue={0}
@@ -66,7 +88,7 @@ const ImageFullScreen = ({ route }) => {
           onValueChange={handleOpacityChange}
           minimumTrackTintColor="white"
         />
-        <Image source={require('../assets/contrast.png')} />
+        <Icons name="contrast" color={'#7F7572'} size={30} />
       </View>
     </View>
   );

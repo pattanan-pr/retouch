@@ -3,6 +3,8 @@ import {useNavigation} from '@react-navigation/native';
 import React, { useState } from 'react';
 import {Image, StyleSheet, ImageBackground, View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icons from 'react-native-vector-icons/MaterialIcons';
 
 const ShowImage = ({route}) => {
   const navigation = useNavigation();
@@ -19,19 +21,22 @@ const ShowImage = ({route}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={goBackToHome}>
-          <Image source={require('../assets/Close.png')} />
+          <Icon name="close" color={'#FFFFFF'} size={30} />
         </TouchableOpacity>
         <Text>Preview</Text>
         <TouchableOpacity>
-          <Image source={require('../assets/Save.png')} />
+          <Icons name="save-alt" color={'#FFFFFF'} size={30} />
         </TouchableOpacity>
       </View>
       <Image
         source={{uri: route.params.imageUri}}
         style={styles.imageBackground}
       />
+      <View style={styles.opacityTextContainer}>
+        <Text style={styles.opacityText}>Opacity</Text>
+      </View>
       <View style={styles.sliderContainer}>
-        <Image source={require('../assets/circle.png')} />
+        <Icon name="circle-outline" color={'#7F7572'} size={30} />
         <Slider
           style={styles.slider}
           minimumValue={0}
@@ -40,7 +45,7 @@ const ShowImage = ({route}) => {
           onValueChange={handleOpacityChange}
           minimumTrackTintColor="white"
         />
-        <Image source={require('../assets/contrast.png')} />
+        <Icons name="contrast" color={'#7F7572'} size={30} />
       </View>
     </View>
   );

@@ -21,6 +21,10 @@ import {useNavigation} from '@react-navigation/native';
 import {captureRef} from 'react-native-view-shot';
 import Geolocation from 'react-native-geolocation-service';
 import GeoFencing from 'react-native-geo-fencing';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Slider from '@react-native-community/slider';
+import Icons from 'react-native-vector-icons/MaterialIcons';
+import Toggle from 'react-native-toggle-element';
 
 ViroMaterials.createMaterials({
   Material: {
@@ -38,8 +42,6 @@ ViroMaterials.createMaterials({
 });
 
 const HelloWorldSceneAR = ({myValue}) => {
-  console.log(myValue, 'myValue');
-  // const materials = ['Material'];
   const materials = myValue ? ['Material'] : ['Material2'];
   function onInitialized(state, reason) {
     console.log('guncelleme', state, reason);
@@ -106,8 +108,16 @@ const Camera = () => {
   const [forceRender, setForceRender] = useState(false);
 
   const [isInsidePolygon, setIsInsidePolygon] = useState(false);
-  const [hi, sethi] = useState('');
+
   const [polygon, setPolygon] = useState({lat: 0, lng: 0});
+
+  const [isVisible, setVisible] = useState(false);
+
+  const [toggleValue, setToggleValue] = useState(false);
+
+  const toggleModal = () => {
+    setVisible(!isVisible);
+  };
 
   useEffect(() => {
     getCurrentLocation();
@@ -120,10 +130,93 @@ const Camera = () => {
     setForceRender(true);
   }, []);
 
-  const getCurrentLocation = () => {
+  // const getCurrentLocation = () => {
+  //   Geolocation.requestAuthorization('always');
+  //   Geolocation.getCurrentPosition(
+  //     async position => {
+  //       let point = {
+  //         lat: position.coords.latitude,
+  //         lng: position.coords.longitude,
+  //       };
+  //       console.log(point);
+  //       setPolygon(point);
+
+  //       const lat = position.coords.latitude;
+  //       const lng = position.coords.longitude;
+
+  //       const squareSize = 0.000001;
+  //       const polygon = [
+  //         {
+  //           lat: 13.741935729980469 + squareSize,
+  //           lng: 100.58592027530723 + squareSize,
+  //         },
+  //         {
+  //           lat: 13.741935729980469 + squareSize,
+  //           lng: 100.58592027530723 - squareSize,
+  //         },
+  //         {
+  //           lat: 13.741935729980469 - squareSize,
+  //           lng: 100.58592027530723 - squareSize,
+  //         },
+  //         {
+  //           lat: 13.741935729980469 - squareSize,
+  //           lng: 100.58592027530723 + squareSize,
+  //         },
+  //         {
+  //           lat: 13.741935729980469 + squareSize,
+  //           lng: 100.58592027530723 + squareSize,
+  //         },
+  //       ];
+  //       const polygon2 = [
+  //         {
+  //           lat: 13.541935729980469 + squareSize,
+  //           lng: 100.58592027530723 + squareSize,
+  //         },
+  //         {
+  //           lat: 13.541935729980469 + squareSize,
+  //           lng: 100.58592027530723 - squareSize,
+  //         },
+  //         {
+  //           lat: 13.541935729980469 - squareSize,
+  //           lng: 100.58592027530723 - squareSize,
+  //         },
+  //         {
+  //           lat: 13.541935729980469 - squareSize,
+  //           lng: 100.58592027530723 + squareSize,
+  //         },
+  //         {
+  //           lat: 13.541935729980469 + squareSize,
+  //           lng: 100.58592027530723 + squareSize,
+  //         },
+  //       ];
+
+  //       try {
+  //         await GeoFencing.containsLocation(point, polygon);
+  //         await setForceRender(false);
+  //         await setIsInsidePolygon(true);
+  //         await setForceRender(true);
+  //       } catch (error) {
+  //         console.log('point is NOT within polygon');
+  //         await setForceRender(false);
+  //         await setIsInsidePolygon(false);
+  //         await setForceRender(true);
+  //       }
+  //     },
+  //     error => console.log('err get location', error),
+  //     {
+  //       enableHighAccuracy: true,
+  //       accuracy: {android: 'high', ios: 'bestForNavigation'},
+  //       timeout: 200000,
+  //       distanceFilter: 0,
+  //     },
+  //   );
+  // };
+
+  const getCurrentLocation = async () => {
+    Geolocation.requestAuthorization('always');
     Geolocation.getCurrentPosition(
       async position => {
-        let point = {
+        const point = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
@@ -134,7 +227,7 @@ const Camera = () => {
         const lng = position.coords.longitude;
 
         const squareSize = 0.000001;
-        const polygon = [
+        const polygon1 = [
           {
             lat: 13.741935729980469 + squareSize,
             lng: 100.58592027530723 + squareSize,
@@ -156,31 +249,55 @@ const Camera = () => {
             lng: 100.58592027530723 + squareSize,
           },
         ];
+        const polygon2 = [
+          {
+            lat: 13.541935729980469 + squareSize,
+            lng: 100.58592027530723 + squareSize,
+          },
+          {
+            lat: 13.541935729980469 + squareSize,
+            lng: 100.58592027530723 - squareSize,
+          },
+          {
+            lat: 13.541935729980469 - squareSize,
+            lng: 100.58592027530723 - squareSize,
+          },
+          {
+            lat: 13.541935729980469 - squareSize,
+            lng: 100.58592027530723 + squareSize,
+          },
+          {
+            lat: 13.541935729980469 + squareSize,
+            lng: 100.58592027530723 + squareSize,
+          },
+        ];
 
         try {
-          await GeoFencing.containsLocation(point, polygon);
-          await setForceRender(false);
-          // setForceRender(true);
-          await setIsInsidePolygon(true);
-          await setForceRender(true);
-          // setForceRender(false);
+          const isInside1 = await GeoFencing.containsLocation(point, polygon1);
+          const isInside2 = await GeoFencing.containsLocation(point, polygon2);
+
+          const isInsidePolygon = isInside1 || isInside2;
+
+          setForceRender(false);
+          setIsInsidePolygon(isInsidePolygon);
+          setForceRender(true);
         } catch (error) {
           console.log('point is NOT within polygon');
-          await setForceRender(false);
-          await setIsInsidePolygon(false);
-          await setForceRender(true);
+          setForceRender(false);
+          setIsInsidePolygon(false);
+          setForceRender(true);
         }
       },
       error => console.log('err get location', error),
       {
         enableHighAccuracy: true,
+        accuracy: {android: 'high', ios: 'bestForNavigation'},
         timeout: 200000,
         distanceFilter: 0,
       },
     );
   };
 
-  // console.log(isInsidePolygon, 'wopkopwe');
   const savePhoto = async () => {
     try {
       const photo = await captureRef(savedPhoto, {
@@ -210,8 +327,6 @@ const Camera = () => {
     }
   };
 
-  console.log(isInsidePolygon, 'isInsidePolygon');
-
   return (
     <View style={{flex: 1}}>
       {forceRender && (
@@ -233,7 +348,7 @@ const Camera = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 530,
+          marginBottom: 700,
           paddingHorizontal: 16,
         }}>
         <View />
@@ -247,10 +362,9 @@ const Camera = () => {
           Wat Maha That
         </Text>
         <TouchableOpacity onPress={getCurrentLocation}>
-          <Image source={require('../assets/Refresh.png')} />
+          <Icon name="refresh" color={'#7F7572'} size={30} />
         </TouchableOpacity>
       </View>
-
       <View
         style={{
           position: 'absolute',
@@ -262,7 +376,7 @@ const Camera = () => {
           marginBottom: 500,
           paddingHorizontal: 16,
         }}>
-        <Text>{JSON.stringify(polygon)}</Text>
+        <Text style={{color: 'white'}}>{JSON.stringify(polygon)}</Text>
       </View>
       <View
         style={{
@@ -294,15 +408,20 @@ const Camera = () => {
         style={{
           position: 'absolute',
           bottom: 0,
-          left: 50,
+          left: 0,
           right: 0,
           flexDirection: 'row',
           justifyContent: 'flex-start',
           alignItems: 'center',
           marginBottom: 39,
         }}>
-        <TouchableOpacity>
-          <Image source={require('../assets/Tune.png')} />
+        <TouchableOpacity onPress={toggleModal}>
+          <View
+            style={{
+              marginLeft: 50,
+            }}>
+            <Icon name="tune" color={'#FFFFFF'} size={30} />
+          </View>
         </TouchableOpacity>
       </View>
       <View
@@ -317,9 +436,68 @@ const Camera = () => {
           marginBottom: 39,
         }}>
         <TouchableOpacity onPress={savePhoto}>
-          <Image source={require('../assets/Face.png')} />
+          <Icon name="face-man-outline" color={'#FFFFFF'} size={30} />
         </TouchableOpacity>
       </View>
+      {isVisible && (
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#fff',
+            height: 230,
+            borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
+          }}>
+          <View style={{marginVertical: 16}}>
+            <TouchableOpacity onPress={toggleModal}>
+              <View
+                style={{
+                  height: 8,
+                  width: 85,
+                  backgroundColor: '#C8C3C2',
+                  borderRadius: 16,
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              alignSelf: 'flex-start', // Align the "Opacity" text to the left
+              marginLeft: 32,
+            }}>
+            <Text>Opacity</Text>
+            <View />
+          </View>
+          <View style={styles.sliderContainer}>
+            <Icon name="circle-outline" color={'#686868'} size={30} />
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={1}
+              // value={opacity}
+              // onValueChange={handleOpacityChange}
+              minimumTrackTintColor="#B02F00"
+            />
+            <Icons name="contrast" color={'#686868'} size={30} />
+          </View>
+          <View style={styles.sliderLine} />
+          <View
+            style={{
+              alignSelf: 'flex-start', // Align the "Opacity" text to the left
+              marginLeft: 32,
+              marginTop: 16,
+            }}>
+            <Text>Label</Text>
+            <Toggle value={toggleValue} onPress={val => setToggleValue(val)} />
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -334,5 +512,37 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',
+  },
+  modalContainer: {
+    justifyContent: 'flex-end',
+    margin: 0,
+    marginBottom: '25%',
+  },
+  Content: {
+    backgroundColor: 'red',
+    borderRadius: 32,
+    padding: 16,
+    height: 200,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  sliderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 32,
+    // marginBottom: 91,
+  },
+  slider: {
+    flex: 1,
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: 16,
+  },
+  sliderLine: {
+    height: 1.6, // Height of the line
+    backgroundColor: '#C8C3C2', // Color of the line
+    width: '90%', // Full width
+    marginTop: 30,
   },
 });

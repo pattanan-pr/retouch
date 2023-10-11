@@ -6,13 +6,13 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Home from '../screen/Home';
 import Camera from '../screen/Camera';
 import ImageFullScreen from '../screen/ImageFullScreen';
 import TakePhoto from '../screen/TakePhoto';
 import Map from '../screen/Map';
 import Account from '../screen/Account';
 import ShowImage from '../screen/ShowImage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -21,8 +21,27 @@ const Stack = createStackNavigator();
 function SquareTabBarIcon({route, focused}) {
   return (
     <View>
-      <View style={{marginTop: 8}}>
-        <Text>{route.name}</Text>
+      <View
+        style={{marginTop: 8, justifyContent: 'center', alignItems: 'center'}}>
+        {route.name === 'Camera' ? (
+          <Icon
+            name="cube-scan"
+            color={focused ? '#B02F00' : '#655C5A'}
+            size={30}
+          />
+        ) : route.name === 'Map' ? (
+          <Icon
+            name="map-outline"
+            color={focused ? '#B02F00' : '#655C5A'}
+            size={30}
+          />
+        ) : route.name === 'Account' ? (
+          <Icon
+            name="account-circle-outline"
+            color={focused ? '#B02F00' : '#655C5A'}
+            size={30}
+          />
+        ) : null}
       </View>
     </View>
   );
@@ -32,11 +51,25 @@ function BottomTabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarStyle: {height: 72},
+        tabBarStyle: {height: 100},
         tabBarIcon: ({focused}) => (
           <SquareTabBarIcon route={route} focused={focused} />
         ),
-        tabBarLabel: () => null,
+        tabBarLabel: ({focused}) => {
+          let label;
+          if (route.name === 'Camera') {
+            label = 'Retouch';
+          } else if (route.name === 'Map') {
+            label = ' Map';
+          } else if (route.name === 'Account') {
+            label = 'Account';
+          }
+          return (
+            <Text style={{color: focused ? '#B02F00' : '#655C5A'}}>
+              {label}
+            </Text>
+          );
+        },
       })}>
       {/* <Tab.Screen name="Home" component={Home} /> */}
       <Tab.Screen

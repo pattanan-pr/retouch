@@ -532,6 +532,8 @@ PODS:
   - RNScreens (3.25.0):
     - React-Core
     - React-RCTImage
+  - RNVectorIcons (10.0.0):
+    - React-Core
   - SocketRocket (0.6.1)
   - ViroKit (1.0):
     - React
@@ -617,6 +619,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - "ViroKit (from `../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/`)"
   - "ViroReact (from `../node_modules/@viro-community/react-viro/ios/`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -745,6 +748,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-photoeditorsdk"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   ViroKit:
     :path: "../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/"
   ViroReact:
@@ -819,6 +824,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNPhotoEditorSDK: 44ef77c0b8fdd1639d9d13dc65114426f27016da
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
+  RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   ViroKit: 700d3d4ca086368d06224de1cbbc19781aea2094
   ViroReact: f4980e6b04918c4340637f9cbaae22a6bb7ea440
