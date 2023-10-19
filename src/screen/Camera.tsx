@@ -36,7 +36,7 @@ ViroMaterials.createMaterials({
   Material2: {
     shininess: 2.0,
     diffuseTexture: {
-      uri: 'https://as1.ftcdn.net/v2/jpg/02/26/55/78/1000_F_226557861_fiqTpEq0SoV6i9ky0CgixZqrv508erw9.jpg',
+      uri: 'https://upload.wikimedia.org/wikipedia/commons/4/49/360_degree_View_of_the_Shore_temple.jpg',
     },
   },
 });
@@ -116,7 +116,7 @@ const Camera = () => {
   const [toggleValue, setToggleValue] = useState(false);
 
   const toggleModal = () => {
-    setVisible(!isVisible);
+    setVisible(true);
   };
 
   useEffect(() => {
@@ -214,7 +214,7 @@ const Camera = () => {
 
   const getCurrentLocation = async () => {
     Geolocation.requestAuthorization('always');
-    Geolocation.getCurrentPosition(
+    Geolocation.watchPosition(
       async position => {
         const point = {
           lat: position.coords.latitude,
@@ -229,63 +229,156 @@ const Camera = () => {
         const squareSize = 0.000001;
         const polygon1 = [
           {
-            lat: 13.741935729980469 + squareSize,
-            lng: 100.58592027530723 + squareSize,
+            lat: 14.356216576408327,
+            lng: 100.5666164229673,
           },
           {
-            lat: 13.741935729980469 + squareSize,
-            lng: 100.58592027530723 - squareSize,
+            lat: 14.356410803988313,
+            lng: 100.568496173953903,
           },
           {
-            lat: 13.741935729980469 - squareSize,
-            lng: 100.58592027530723 - squareSize,
+            lat: 14.356805762875652,
+            lng: 100.56845923327262,
           },
           {
-            lat: 13.741935729980469 - squareSize,
-            lng: 100.58592027530723 + squareSize,
+            lat: 14.356807521885123,
+            lng: 100.568483804559804,
           },
           {
-            lat: 13.741935729980469 + squareSize,
-            lng: 100.58592027530723 + squareSize,
+            lat: 14.356870178502223,
+            lng: 100.568479085139032,
+          },
+          {
+            lat: 14.356872230991751,
+            lng: 100.568509194699899,
+          },
+          {
+            lat: 14.356935351236006,
+            lng: 100.568504667529425,
+          },
+          {
+            lat: 14.35694870357066,
+            lng: 100.568513839558577,
+          },
+          {
+            lat: 14.356995867503976,
+            lng: 100.56851045682194,
+          },
+          {
+            lat: 14.3570078455296,
+            lng: 100.568499468021258,
+          },
+          {
+            lat: 14.357047119848227,
+            lng: 100.568496651147925,
+          },
+          {
+            lat: 14.357063264237324,
+            lng: 100.56851544075036,
+          },
+          {
+            lat: 14.35711791706326,
+            lng: 100.568511028965034,
+          },
+          {
+            lat: 14.357130989058874,
+            lng: 100.568489772707053,
+          },
+          {
+            lat: 14.357170822311787,
+            lng: 100.568486090371252,
+          },
+          {
+            lat: 14.357184351418546,
+            lng: 100.56849498568036,
+          },
+          {
+            lat: 14.357231439663684,
+            lng: 100.568490632665672,
+          },
+          {
+            lat: 14.357243200267254,
+            lng: 100.568479399477269,
+          },
+          {
+            lat: 14.357300351484724,
+            lng: 100.568474116197891,
+          },
+          {
+            lat: 14.357297753710814,
+            lng: 100.568437828313535,
+          },
+          {
+            lat: 14.357368899747161,
+            lng: 100.568432469426185,
+          },
+          {
+            lat: 14.357366767538869,
+            lng: 100.568402685011321,
+          },
+          {
+            lat: 14.357769922147774,
+            lng: 100.568364687888533,
+          },
+          {
+            lat: 14.357574138111271,
+            lng: 100.566437792440823,
+          },
+          {
+            lat: 14.356923730156236,
+            lng: 100.56652503605774,
+          },
+          {
+            lat: 14.356909424254649,
+            lng: 100.566506852067107,
+          },
+          {
+            lat: 14.356856690436171,
+            lng: 100.566513925592147,
+          },
+          {
+            lat: 14.356847421046435,
+            lng: 100.566535247806286,
+          },
+          {
+            lat: 14.356216576408327,
+            lng: 100.5666164229673,
           },
         ];
-        const polygon2 = [
-          {
-            lat: 13.541935729980469 + squareSize,
-            lng: 100.58592027530723 + squareSize,
-          },
-          {
-            lat: 13.541935729980469 + squareSize,
-            lng: 100.58592027530723 - squareSize,
-          },
-          {
-            lat: 13.541935729980469 - squareSize,
-            lng: 100.58592027530723 - squareSize,
-          },
-          {
-            lat: 13.541935729980469 - squareSize,
-            lng: 100.58592027530723 + squareSize,
-          },
-          {
-            lat: 13.541935729980469 + squareSize,
-            lng: 100.58592027530723 + squareSize,
-          },
-        ];
+
+        // const polygon2 = [
+        //   {
+        //     lat: 13.741835729980469 + squareSize,
+        //     lng: 100.58592027530723 + squareSize,
+        //   },
+        //   {
+        //     lat: 13.741835729980469 + squareSize,
+        //     lng: 100.58592027530723 - squareSize,
+        //   },
+        //   {
+        //     lat: 13.741835729980469 - squareSize,
+        //     lng: 100.58592027530723 - squareSize,
+        //   },
+        //   {
+        //     lat: 13.741835729980469 - squareSize,
+        //     lng: 100.58592027530723 + squareSize,
+        //   },
+        //   {
+        //     lat: 13.741935729980469 + squareSize,
+        //     lng: 100.58592027530723 + squareSize,
+        //   },
+        // ];
 
         try {
           const isInside1 = await GeoFencing.containsLocation(point, polygon1);
-          const isInside2 = await GeoFencing.containsLocation(point, polygon2);
+          // const isInside2 = await GeoFencing.containsLocation(point, polygon2);
 
-          const isInsidePolygon = isInside1 || isInside2;
+          const isInsidePolygon = isInside1;
 
-          setForceRender(false);
           setIsInsidePolygon(isInsidePolygon);
-          setForceRender(true);
         } catch (error) {
           console.log('point is NOT within polygon');
-          setForceRender(false);
           setIsInsidePolygon(false);
-          setForceRender(true);
         }
       },
       error => console.log('err get location', error),
@@ -307,6 +400,7 @@ const Camera = () => {
       });
       const bg = `file:/${photo}`;
       setForceRender(false);
+      console.log(photo, 'popo');
       navigation.navigate('TakePhoto', {imageUri: bg});
     } catch (error) {
       console.log(error);
@@ -468,7 +562,7 @@ const Camera = () => {
           </View>
           <View
             style={{
-              alignSelf: 'flex-start', // Align the "Opacity" text to the left
+              alignSelf: 'flex-start',
               marginLeft: 32,
             }}>
             <Text>Opacity</Text>
@@ -480,8 +574,6 @@ const Camera = () => {
               style={styles.slider}
               minimumValue={0}
               maximumValue={1}
-              // value={opacity}
-              // onValueChange={handleOpacityChange}
               minimumTrackTintColor="#B02F00"
             />
             <Icons name="contrast" color={'#686868'} size={30} />
@@ -489,7 +581,7 @@ const Camera = () => {
           <View style={styles.sliderLine} />
           <View
             style={{
-              alignSelf: 'flex-start', // Align the "Opacity" text to the left
+              alignSelf: 'flex-start',
               marginLeft: 32,
               marginTop: 16,
             }}>
@@ -531,7 +623,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 32,
-    // marginBottom: 91,
   },
   slider: {
     flex: 1,
@@ -540,9 +631,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   sliderLine: {
-    height: 1.6, // Height of the line
-    backgroundColor: '#C8C3C2', // Color of the line
-    width: '90%', // Full width
+    height: 1.6,
+    backgroundColor: '#C8C3C2',
+    width: '90%',
     marginTop: 30,
   },
 });

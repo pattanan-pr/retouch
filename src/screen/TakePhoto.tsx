@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  TouchableHighlight,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import {RNCamera} from 'react-native-camera';
@@ -16,82 +17,129 @@ import {
   ImageExportType,
 } from 'react-native-photoeditorsdk';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
 
 const TakePhoto = ({route}) => {
   const cameraRef = useRef<RNCamera | null>(null);
   const navigation = useNavigation();
   const [isRecording, setIsRecording] = useState(false);
 
+  // const takePicture = async () => {
+  //   console.log('take pic!');
+  //   if (cameraRef.current) {
+  //     const options = {quality: 0.5, base64: true};
+  //     const data = await cameraRef.current.takePictureAsync(options);
+
+  //     try {
+  //       const configuration: Configuration = {
+  //         mainCanvasActions: [
+  //           CanvasAction.UNDO,
+  //           CanvasAction.REDO,
+  //           CanvasAction.REMOVE_BACKGROUND,
+  //         ],
+  //         export: {
+  //           image: {
+  //             exportType: ImageExportType.FILE_URL,
+  //             format: ImageFormat.PNG,
+  //           },
+  //         },
+  //       };
+  //       const result = await PESDK.openEditor(data.uri, configuration);
+
+  //       if (result != null) {
+  //         navigation.navigate('ImageFullScreen', {
+  //           image: result.image,
+  //           bgImg: route.params.imageUri,
+  //         });
+  //       } else {
+  //         console.log('User canceled editing.');
+  //       }
+  //     } catch (error) {
+  //       console.log('Error while editing:', error);
+  //     }
+  //   }
+  // };
+
   const takePicture = async () => {
+    console.log('take pic!');
     if (cameraRef.current) {
       const options = {quality: 0.5, base64: true};
       const data = await cameraRef.current.takePictureAsync(options);
+      const formData = new FormData();
+      formData.append('image', {
+        uri: data.uri,
+        type: 'image/jpeg',
+        name: 'image',
+      });
+      formData.append('background', {
+        uri: route.params.imageUri,
+        type: 'image/jpeg',
+        name: 'image',
+      });
+      console.log(formData, 'from');
+      console.log(route.params.imageUri, 'kiii');
 
       try {
-        const configuration: Configuration = {
-          mainCanvasActions: [
-            CanvasAction.UNDO,
-            CanvasAction.REDO,
-            CanvasAction.REMOVE_BACKGROUND,
-          ],
-          export: {
-            image: {
-              exportType: ImageExportType.FILE_URL, // or ImageExportType.DATA_URL
-              format: ImageFormat.PNG,
-              // You can also specify other options like quality if needed
-              // quality: 0.9,
+        const response = await axios.post(
+          'https://7c03-2403-6200-88a2-4333-e013-6837-8b3f-126f.ngrok-free.app/upload_image',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
             },
           },
-        };
-        // Open the photo editor and handle the export as well as any occurring errors.
-        const result = await PESDK.openEditor(data.uri, configuration);
-        // console.log(result.image, 'image');
+        );
 
-        if (result != null) {
-          // Navigate to the full-screen image view with the edited image
-          // console.log('sok');
-          navigation.navigate('ImageFullScreen', {
-            image: result.image,
-            bgImg: route.params.imageUri,
-          });
+        if (response.status === 200) {
+          const responseData = response.data;
+          console.log('Upload successful', responseData);
+          console.log(responseData, 'hulay');
+          // navigation.navigate('ImageFullScreen', {
+          //   image: result.image,
+          //   bgImg: route.params.imageUri,
+          // });
         } else {
-          // The user tapped on the cancel button within the editor.
-          console.log('User canceled editing.');
+          console.log('Upload failed');
         }
       } catch (error) {
-        // There was an error generating the edited photo.
-        console.log('Error while editing:', error);
+        console.error('Error while uploading:', error);
       }
     }
-    //   };
-  };
-
-  const recordingOptions = {
-    quality: RNCamera.Constants.VideoQuality['720p'],
-    maxDuration: 5000, // Set the maximum video duration to 5 seconds (5000 milliseconds)
   };
 
   const toggleRecording = async () => {
+    console.log('take vdo!');
     if (cameraRef.current) {
       try {
-        if (!isRecording) {
-          // Start recording
-          await cameraRef.current.recordAsync(recordingOptions);
-          setIsRecording(true);
-        } else {
-          // Stop recording
-          const data = await cameraRef.current.stopRecording();
-          setIsRecording(false);
+        const option = {
+          quality: RNCamera.Constants.VideoQuality['720p'],
+          maxDuration: 2000,
+        };
+        const videoRecordPromise = cameraRef.current.recordAsync(option);
+        if (videoRecordPromise) {
+          const data = await videoRecordPromise;
+          const source = data.uri;
+          console.log(source, 'this is path');
 
-          // Handle the recorded video as needed
-          console.log('Recorded video URI:', data);
+          navigation.navigate('ViewVideoScreen', {
+            videoUri: source,
+          });
         }
       } catch (error) {
-        console.log('Error while recording:', error);
+        console.log(error);
       }
     }
   };
 
+  const stopRecording = () => {
+    if (isRecording) {
+      setIsRecording(false);
+
+      if (recordingPromise) {
+        recordingPromise.cancel();
+      }
+    }
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -112,14 +160,13 @@ const TakePhoto = ({route}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={takePicture}>
+            <TouchableHighlight
+              onPress={takePicture}
+              onLongPress={toggleRecording}
+              onPressOut={stopRecording}
+              underlayColor="white">
               <View style={styles.button} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer2}>
-            <TouchableOpacity onPress={toggleRecording}>
-              <View style={styles.button} />
-            </TouchableOpacity>
+            </TouchableHighlight>
           </View>
         </ImageBackground>
       </RNCamera>
@@ -145,14 +192,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     marginTop: 40,
     bottom: 20,
-    left: '50%', // Center horizontally
+    left: '50%',
     transform: [{translateX: -30}],
   },
   buttonContainer2: {
     position: 'absolute',
     marginTop: 40,
     bottom: 20,
-    left: '70%', // Center horizontally
+    left: '70%',
     transform: [{translateX: -30}],
   },
   button: {

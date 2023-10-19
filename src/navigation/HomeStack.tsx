@@ -18,7 +18,6 @@ import ViewVideoScreen from '../screen/ViewVideoScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Your individual screens
 function SquareTabBarIcon({route, focused}) {
   return (
     <View>
@@ -72,7 +71,6 @@ function BottomTabNavigator() {
           );
         },
       })}>
-      {/* <Tab.Screen name="Home" component={Home} /> */}
       <Tab.Screen
         name="Camera"
         component={Camera}

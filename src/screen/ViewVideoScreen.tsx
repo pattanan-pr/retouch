@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import Video from 'react-native-video';
 
 const ViewVideoScreen = ({route}) => {
@@ -7,11 +7,11 @@ const ViewVideoScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <Video
-        source={{uri: videoUri}} // Use the URI of the recorded video
-        style={styles.video}
-        controls={true} // Show video controls (play, pause, etc.)
-      />
+      {videoUri ? (
+        <Video source={{uri: videoUri}} style={styles.video} controls={true} />
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </View>
   );
 };

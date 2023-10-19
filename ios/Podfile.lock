@@ -398,6 +398,9 @@ PODS:
     - React
   - react-native-geolocation-service (5.3.1):
     - React
+  - react-native-record-screen (0.6.1):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-safe-area-context (4.7.2):
     - React-Core
   - react-native-slider (4.4.3):
@@ -593,6 +596,7 @@ DEPENDENCIES:
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-geo-fencing (from `../node_modules/react-native-geo-fencing`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
+  - react-native-record-screen (from `../node_modules/react-native-record-screen`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-video (from `../node_modules/react-native-video`)
@@ -696,6 +700,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-geo-fencing"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
+  react-native-record-screen:
+    :path: "../node_modules/react-native-record-screen"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
@@ -798,6 +804,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-geo-fencing: c0bc70082b0eeec332d8cda130f26e217fd8da55
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
+  react-native-record-screen: 3c58fca118061c0197c0789e7bfb43bf258fa038
   react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
   react-native-slider: 1cdd6ba29675df21f30544253bf7351d3c2d68c4
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253

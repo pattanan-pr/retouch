@@ -15,7 +15,7 @@ const ShowImage = ({route}) => {
   };
 
   const goBackToHome = () => {
-    navigation.navigate('Camera'); // Navigate back to the 'Home' page (adjust the name accordingly)
+    navigation.navigate('Camera');
   };
   return (
     <View style={styles.container}>
