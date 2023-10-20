@@ -288,7 +288,6 @@ const Camera = () => {
         };
 
         console.log(userLocation, 'loc');
-
         formattedPoints.forEach(async (point, index) => {
           GeoFencing.containsLocation(userLocation, point)
             .then(async () => {
