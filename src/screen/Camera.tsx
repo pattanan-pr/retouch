@@ -67,9 +67,11 @@ ViroMaterials.createMaterials({
 });
 
 const HelloWorldSceneAR = ({myValue}) => {
+  console.log(myValue, 'w');
   const materials = myValue
     ? ['Material', 'Material3', 'Material5']
     : ['Material2', 'Material4', 'Material6'];
+  // console.log(materials, 'mat');
   function onInitialized(state: any, reason: any) {
     console.log('guncelleme', state, reason);
   }
@@ -138,6 +140,8 @@ const Camera = () => {
 
   const [polygon, setPolygon] = useState({lat: 0, lng: 0});
 
+  const [materialin, setMaterialin] = useState(0);
+
   const [material, setMaterial] = useState('');
 
   const [isVisible, setVisible] = useState(false);
@@ -146,8 +150,8 @@ const Camera = () => {
 
   const points = [
     {
-      lat: 13.741741687096379,
-      lng: 100.58614783835698,
+      lat: 13.81591243875552,
+      lng: 100.563231185188,
       imageName: '14.35719369,100.5678566.png',
       Material: 'Material',
     },
@@ -198,7 +202,7 @@ const Camera = () => {
     setForceRender(true);
   }, []);
 
-  const squareSize = 0.0004;
+  const squareSize = 0.001;
 
   const formattedPoints = points.map(point => [
     {
@@ -223,6 +227,57 @@ const Camera = () => {
     },
   ]);
 
+  // const materialsArray = [
+  //   'Material',
+  //   'Material2',
+  //   'Material3',
+  //   'Material4',
+  //   'Material5',
+  //   'Material6',
+  // ];
+  // const getCurrentLocation = async () => {
+  //   Geolocation.requestAuthorization('always');
+  //   Geolocation.watchPosition(
+  //     async position => {
+  //       const userLocation = {
+  //         lat: position.coords.latitude,
+  //         lng: position.coords.longitude,
+  //       };
+
+  //       console.log(userLocation, 'loc');
+
+  //       formattedPoints.forEach(async (point, index) => {
+  //         // const material = materialsArray[index];
+  //         // console.log(material, 'mat');
+  //         // setMaterial(material);
+  //         GeoFencing.containsLocation(userLocation, point)
+  //           .then(() => {
+  //             console.log('Point is within polygon');
+  //             setMaterialin(index);
+  //             console.log(materialin, 'in');
+  //             // Set the material based on the point
+  //             // console.log('Index:', index);
+  //             // const material = materialsArray[index];
+  //             // console.log(index, 'mat');
+  //             // setMaterial(material);
+  //             // console.log(point, 'pp');
+  //             // setMaterial(point);
+  //           })
+  //           .catch(() => console.log('point is NOT within polygon'));
+  //       });
+  //       setMaterial(materialsArray[materialin]);
+  //       console.log(material, 'lp');
+  //     },
+  //     error => console.log('err get location', error),
+  //     {
+  //       enableHighAccuracy: true,
+  //       accuracy: {android: 'high', ios: 'bestForNavigation'},
+  //       timeout: 200000,
+  //       distanceFilter: 0,
+  //     },
+  //   );
+  // };
+  // console.log(material, 'klnh;ohuliglu');
   const getCurrentLocation = async () => {
     Geolocation.requestAuthorization('always');
     Geolocation.watchPosition(
@@ -236,22 +291,24 @@ const Camera = () => {
 
         formattedPoints.forEach(async (point, index) => {
           GeoFencing.containsLocation(userLocation, point)
-            .then(() => {
+            .then(async () => {
+              console.log(index);
               console.log('Point is within polygon');
-              // Set the material based on the point
-              // console.log('Index:', index);
-              const materialsArray = [
-                'Material',
-                'Material2',
-                'Material3',
-                'Material4',
-                'Material5',
-                'Material6',
-              ];
-              const material = materialsArray[index];
-              setMaterial(material);
-              console.log(point, 'pp');
-              // setMaterial(point);
+              if (index === 0) {
+                await setMaterial('Material');
+              } else if (index === 1) {
+                await setMaterial('Material2');
+              } else if (index === 2) {
+                await setMaterial('Material3');
+              } else if (index === 3) {
+                await setMaterial('Material4');
+              } else if (index === 4) {
+                await setMaterial('Material5');
+              } else if (index === 5) {
+                await setMaterial('Material6');
+              } else {
+                console.log('none');
+              }
             })
             .catch(() => console.log('point is NOT within polygon'));
         });
@@ -265,6 +322,8 @@ const Camera = () => {
       },
     );
   };
+
+  console.log(material, 'this is');
 
   const savePhoto = async () => {
     try {
@@ -298,7 +357,7 @@ const Camera = () => {
 
   return (
     <View style={{flex: 1}}>
-      {forceRender && (
+      {forceRender && material && (
         <ViroARSceneNavigator
           ref={savedPhoto}
           autofocus={true}
@@ -317,7 +376,7 @@ const Camera = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 700,
+          marginBottom: 500,
           paddingHorizontal: 16,
         }}>
         <View />
