@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -137,7 +138,7 @@ const Camera = () => {
 
   const [polygon, setPolygon] = useState({lat: 0, lng: 0});
 
-  const [material, setMaterail] = useState('');
+  const [material, setMaterial] = useState('');
 
   const [isVisible, setVisible] = useState(false);
 
@@ -145,20 +146,20 @@ const Camera = () => {
 
   const points = [
     {
-      lat: 14.35719369,
-      lng: 100.5678566,
+      lat: 13.741741687096379,
+      lng: 100.58614783835698,
       imageName: '14.35719369,100.5678566.png',
       Material: 'Material',
     },
     {
-      lat: 14.35719369,
-      lng: 100.56787514,
+      lat: 13.745741687096379,
+      lng: 100.5814783835698,
       imageName: '14.35719369,100.56787514.png',
       Material: 'Material2',
     },
     {
-      lat: 14.35721176,
-      lng: 100.56776389,
+      lat: 13.742741687096379,
+      lng: 100.5814783835698,
       imageName: '14.35719369,100.56787514.png',
       Material: 'Material3',
     },
@@ -197,287 +198,30 @@ const Camera = () => {
     setForceRender(true);
   }, []);
 
-  // const getCurrentLocation = () => {
-  //   Geolocation.requestAuthorization('always');
-  //   Geolocation.getCurrentPosition(
-  //     async position => {
-  //       let point = {
-  //         lat: position.coords.latitude,
-  //         lng: position.coords.longitude,
-  //       };
-  //       console.log(point);
-  //       setPolygon(point);
+  const squareSize = 0.001;
 
-  //       const lat = position.coords.latitude;
-  //       const lng = position.coords.longitude;
-
-  //       const squareSize = 0.000001;
-  //       const polygon = [
-  //         {
-  //           lat: 13.741935729980469 + squareSize,
-  //           lng: 100.58592027530723 + squareSize,
-  //         },
-  //         {
-  //           lat: 13.741935729980469 + squareSize,
-  //           lng: 100.58592027530723 - squareSize,
-  //         },
-  //         {
-  //           lat: 13.741935729980469 - squareSize,
-  //           lng: 100.58592027530723 - squareSize,
-  //         },
-  //         {
-  //           lat: 13.741935729980469 - squareSize,
-  //           lng: 100.58592027530723 + squareSize,
-  //         },
-  //         {
-  //           lat: 13.741935729980469 + squareSize,
-  //           lng: 100.58592027530723 + squareSize,
-  //         },
-  //       ];
-  //       const polygon2 = [
-  //         {
-  //           lat: 13.541935729980469 + squareSize,
-  //           lng: 100.58592027530723 + squareSize,
-  //         },
-  //         {
-  //           lat: 13.541935729980469 + squareSize,
-  //           lng: 100.58592027530723 - squareSize,
-  //         },
-  //         {
-  //           lat: 13.541935729980469 - squareSize,
-  //           lng: 100.58592027530723 - squareSize,
-  //         },
-  //         {
-  //           lat: 13.541935729980469 - squareSize,
-  //           lng: 100.58592027530723 + squareSize,
-  //         },
-  //         {
-  //           lat: 13.541935729980469 + squareSize,
-  //           lng: 100.58592027530723 + squareSize,
-  //         },
-  //       ];
-
-  //       try {
-  //         await GeoFencing.containsLocation(point, polygon);
-  //         await setForceRender(false);
-  //         await setIsInsidePolygon(true);
-  //         await setForceRender(true);
-  //       } catch (error) {
-  //         console.log('point is NOT within polygon');
-  //         await setForceRender(false);
-  //         await setIsInsidePolygon(false);
-  //         await setForceRender(true);
-  //       }
-  //     },
-  //     error => console.log('err get location', error),
-  //     {
-  //       enableHighAccuracy: true,
-  //       accuracy: {android: 'high', ios: 'bestForNavigation'},
-  //       timeout: 200000,
-  //       distanceFilter: 0,
-  //     },
-  //   );
-  // };
-
-  // const getCurrentLocation = async () => {
-  //   Geolocation.requestAuthorization('always');
-  //   Geolocation.watchPosition(
-  //     async position => {
-  //       const point = {
-  //         lat: position.coords.latitude,
-  //         lng: position.coords.longitude,
-  //       };
-  //       console.log(point);
-  //       setPolygon(point);
-
-  //       const lat = position.coords.latitude;
-  //       const lng = position.coords.longitude;
-
-  //       const squareSize = 0.000001;
-  //       const polygon1 = [
-  //         {
-  //           lat: 14.356216576408327,
-  //           lng: 100.5666164229673,
-  //         },
-  //         {
-  //           lat: 14.356410803988313,
-  //           lng: 100.568496173953903,
-  //         },
-  //         {
-  //           lat: 14.356805762875652,
-  //           lng: 100.56845923327262,
-  //         },
-  //         {
-  //           lat: 14.356807521885123,
-  //           lng: 100.568483804559804,
-  //         },
-  //         {
-  //           lat: 14.356870178502223,
-  //           lng: 100.568479085139032,
-  //         },
-  //         {
-  //           lat: 14.356872230991751,
-  //           lng: 100.568509194699899,
-  //         },
-  //         {
-  //           lat: 14.356935351236006,
-  //           lng: 100.568504667529425,
-  //         },
-  //         {
-  //           lat: 14.35694870357066,
-  //           lng: 100.568513839558577,
-  //         },
-  //         {
-  //           lat: 14.356995867503976,
-  //           lng: 100.56851045682194,
-  //         },
-  //         {
-  //           lat: 14.3570078455296,
-  //           lng: 100.568499468021258,
-  //         },
-  //         {
-  //           lat: 14.357047119848227,
-  //           lng: 100.568496651147925,
-  //         },
-  //         {
-  //           lat: 14.357063264237324,
-  //           lng: 100.56851544075036,
-  //         },
-  //         {
-  //           lat: 14.35711791706326,
-  //           lng: 100.568511028965034,
-  //         },
-  //         {
-  //           lat: 14.357130989058874,
-  //           lng: 100.568489772707053,
-  //         },
-  //         {
-  //           lat: 14.357170822311787,
-  //           lng: 100.568486090371252,
-  //         },
-  //         {
-  //           lat: 14.357184351418546,
-  //           lng: 100.56849498568036,
-  //         },
-  //         {
-  //           lat: 14.357231439663684,
-  //           lng: 100.568490632665672,
-  //         },
-  //         {
-  //           lat: 14.357243200267254,
-  //           lng: 100.568479399477269,
-  //         },
-  //         {
-  //           lat: 14.357300351484724,
-  //           lng: 100.568474116197891,
-  //         },
-  //         {
-  //           lat: 14.357297753710814,
-  //           lng: 100.568437828313535,
-  //         },
-  //         {
-  //           lat: 14.357368899747161,
-  //           lng: 100.568432469426185,
-  //         },
-  //         {
-  //           lat: 14.357366767538869,
-  //           lng: 100.568402685011321,
-  //         },
-  //         {
-  //           lat: 14.357769922147774,
-  //           lng: 100.568364687888533,
-  //         },
-  //         {
-  //           lat: 14.357574138111271,
-  //           lng: 100.566437792440823,
-  //         },
-  //         {
-  //           lat: 14.356923730156236,
-  //           lng: 100.56652503605774,
-  //         },
-  //         {
-  //           lat: 14.356909424254649,
-  //           lng: 100.566506852067107,
-  //         },
-  //         {
-  //           lat: 14.356856690436171,
-  //           lng: 100.566513925592147,
-  //         },
-  //         {
-  //           lat: 14.356847421046435,
-  //           lng: 100.566535247806286,
-  //         },
-  //         {
-  //           lat: 14.356216576408327,
-  //           lng: 100.5666164229673,
-  //         },
-  //       ];
-
-  //       // const polygon2 = [
-  //       //   {
-  //       //     lat: 13.741835729980469 + squareSize,
-  //       //     lng: 100.58592027530723 + squareSize,
-  //       //   },
-  //       //   {
-  //       //     lat: 13.741835729980469 + squareSize,
-  //       //     lng: 100.58592027530723 - squareSize,
-  //       //   },
-  //       //   {
-  //       //     lat: 13.741835729980469 - squareSize,
-  //       //     lng: 100.58592027530723 - squareSize,
-  //       //   },
-  //       //   {
-  //       //     lat: 13.741835729980469 - squareSize,
-  //       //     lng: 100.58592027530723 + squareSize,
-  //       //   },
-  //       //   {
-  //       //     lat: 13.741935729980469 + squareSize,
-  //       //     lng: 100.58592027530723 + squareSize,
-  //       //   },
-  //       // ];
-
-  //       try {
-  //         const isInside1 = await GeoFencing.containsLocation(point, polygon1);
-  //         // const isInside2 = await GeoFencing.containsLocation(point, polygon2);
-
-  //         const isInsidePolygon = isInside1;
-
-  //         setIsInsidePolygon(isInsidePolygon);
-  //       } catch (error) {
-  //         console.log('point is NOT within polygon');
-  //         setIsInsidePolygon(false);
-  //       }
-  //     },
-  //     error => console.log('err get location', error),
-  //     {
-  //       enableHighAccuracy: true,
-  //       accuracy: {android: 'high', ios: 'bestForNavigation'},
-  //       timeout: 200000,
-  //       distanceFilter: 0,
-  //     },
-  //   );
-  // };
-
-  const calculateDistance = (
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number,
-  ) => {
-    const rad = Math.PI / 180;
-    const earthRadius = 6371; // Earth's radius in kilometers
-    const dLat = rad * (lat2 - lat1);
-    const dLon = rad * (lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(rad * lat1) *
-        Math.cos(rad * lat2) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = earthRadius * c; // Distance in kilometers
-    return distance;
-  };
+  const formattedPoints = points.map(point => [
+    {
+      lat: point.lat + squareSize,
+      lng: point.lng + squareSize,
+    },
+    {
+      lat: point.lat + squareSize,
+      lng: point.lng - squareSize,
+    },
+    {
+      lat: point.lat - squareSize,
+      lng: point.lng - squareSize,
+    },
+    {
+      lat: point.lat - squareSize,
+      lng: point.lng + squareSize,
+    },
+    {
+      lat: point.lat + squareSize,
+      lng: point.lng + squareSize,
+    },
+  ]);
 
   const getCurrentLocation = async () => {
     Geolocation.requestAuthorization('always');
@@ -488,21 +232,29 @@ const Camera = () => {
           lng: position.coords.longitude,
         };
 
-        const lat = userLocation.lat;
-        const lng = userLocation.lng;
+        console.log(userLocation, 'loc');
 
-        const distances = points.map(point => ({
-          ...point,
-          distance: calculateDistance(lat, lng, point.lat, point.lng),
-        }));
-
-        distances.sort((a, b) => a.distance - b.distance);
-
-        const nearestPoint = distances[0];
-
-        console.log('Nearest Point:', nearestPoint);
-
-        setMaterail(nearestPoint.Material);
+        formattedPoints.forEach(async (point, index) => {
+          GeoFencing.containsLocation(userLocation, point)
+            .then(() => {
+              console.log('Point is within polygon');
+              // Set the material based on the point
+              // console.log('Index:', index);
+              const materialsArray = [
+                'Material',
+                'Material2',
+                'Material3',
+                'Material4',
+                'Material5',
+                'Material6',
+              ];
+              const material = materialsArray[index];
+              setMaterial(material);
+              console.log(point, 'pp');
+              // setMaterial(point);
+            })
+            .catch(() => console.log('point is NOT within polygon'));
+        });
       },
       error => console.log('err get location', error),
       {
@@ -523,7 +275,7 @@ const Camera = () => {
       });
       const bg = `file:/${photo}`;
       setForceRender(false);
-      console.log(photo, 'popo');
+      // console.log(photo, 'popo');
       navigation.navigate('TakePhoto', {imageUri: bg});
     } catch (error) {
       console.log(error);
