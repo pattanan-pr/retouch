@@ -81,7 +81,7 @@ const TakePhoto = ({route}) => {
 
       try {
         const response = await axios.post(
-          'https://7c03-2403-6200-88a2-4333-e013-6837-8b3f-126f.ngrok-free.app/upload_image',
+          'https://ecaa-2403-6200-88a2-4333-74ad-f545-df3e-72e6.ngrok-free.app/upload_image',
           formData,
           {
             headers: {
@@ -93,11 +93,11 @@ const TakePhoto = ({route}) => {
         if (response.status === 200) {
           const responseData = response.data;
           console.log('Upload successful', responseData);
-          console.log(responseData, 'hulay');
-          // navigation.navigate('ImageFullScreen', {
-          //   image: result.image,
-          //   bgImg: route.params.imageUri,
-          // });
+          // console.log(responseData.base64_image, 'hulay');
+          navigation.navigate('ImageFullScreen', {
+            image: responseData.image_url,
+            // bgImg: route.params.imageUri,
+          });
         } else {
           console.log('Upload failed');
         }

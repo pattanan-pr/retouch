@@ -198,7 +198,7 @@ const Camera = () => {
     setForceRender(true);
   }, []);
 
-  const squareSize = 0.001;
+  const squareSize = 0.0004;
 
   const formattedPoints = points.map(point => [
     {

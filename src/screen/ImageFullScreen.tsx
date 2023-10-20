@@ -8,6 +8,7 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import RNFS from 'react-native-fs';
 
 const ImageFullScreen = ({route}) => {
+  console.log(route, 'popo');
   const navigation = useNavigation();
   const [opacity, setOpacity] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -63,16 +64,18 @@ const ImageFullScreen = ({route}) => {
         </View>
       ) : (
         <View style={styles.imageContainer}>
-          <ImageBackground
+          {/* <ImageBackground
             source={{uri: route.params.bgImg}}
             style={{
               ...styles.imageBackground,
               backgroundColor: `rgba(0, 0, 0, ${opacity})`,
-            }}>
-            <View style={styles.imageContent}>
-              <Image source={{uri: route.params.image}} style={styles.image} />
-            </View>
-          </ImageBackground>
+            }}> */}
+          {/* <View style={styles.imageContent}> */}
+          <Image source={{uri: route.params.image}} style={styles.image} />
+
+          {/* <Image source={{uri: route.params.image}} style={styles.image} /> */}
+          {/* </View> */}
+          {/* </ImageBackground> */}
         </View>
       )}
       <View style={styles.opacityTextContainer}>
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
     // marginHorizontal: 64,
     // marginTop: 114,
     // marginBottom: 60,
