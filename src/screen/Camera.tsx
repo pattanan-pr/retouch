@@ -68,10 +68,8 @@ ViroMaterials.createMaterials({
 
 const HelloWorldSceneAR = ({myValue}) => {
   console.log(myValue, 'w');
-  const materials = myValue
-    ? ['Material', 'Material3', 'Material5']
-    : ['Material2', 'Material4', 'Material6'];
-  // console.log(materials, 'mat');
+  const materials = myValue ? myValue : 'Material';
+
   function onInitialized(state: any, reason: any) {
     console.log('guncelleme', state, reason);
   }
@@ -150,20 +148,20 @@ const Camera = () => {
 
   const points = [
     {
-      lat: 13.81591243875552,
-      lng: 100.563231185188,
+      lat: 13.8161234357452,
+      lng: 100.56228161857784,
       imageName: '14.35719369,100.5678566.png',
       Material: 'Material',
     },
     {
-      lat: 13.745741687096379,
-      lng: 100.5814783835698,
+      lat: 13.816100533185969,
+      lng: 100.56258070051004,
       imageName: '14.35719369,100.56787514.png',
       Material: 'Material2',
     },
     {
-      lat: 13.742741687096379,
-      lng: 100.5814783835698,
+      lat: 14.35722984,
+      lng: 100.56774535,
       imageName: '14.35719369,100.56787514.png',
       Material: 'Material3',
     },
@@ -202,7 +200,7 @@ const Camera = () => {
     setForceRender(true);
   }, []);
 
-  const squareSize = 0.001;
+  const squareSize = 0.000004;
 
   const formattedPoints = points.map(point => [
     {
